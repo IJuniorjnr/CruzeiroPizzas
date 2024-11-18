@@ -1,0 +1,993 @@
+<html><head><base href="." /><meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <title>Pizzaria Bella Napoli</title>
+    <style>
+    :root {
+      --primary: #dd2c00;
+      --secondary: #ffd700;
+      --dark: #333;
+      --light: #fff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    header {
+      background: var(--primary);
+      padding: 1rem;
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      color: var(--light);
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+    
+    .nav-links .cart-count {
+      background: var(--secondary);
+      color: var(--dark);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      position: relative;
+      top: -10px;
+      right: -5px;
+    }
+    
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1513104890138-7c749659a591') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--light);
+      padding-top: 60px;
+    }
+    
+    .hero-content h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-content p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .cta-button {
+      background: var(--primary);
+      color: var(--light);
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .cta-button:hover {
+      background: #ff3d00;
+    }
+    
+    .menu-section {
+      padding: 5rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--dark);
+    }
+    .contato{
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #f9f9f9;
+    }
+    .pizza-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      width: 100%;
+    }
+    
+    .pizza-card {
+      background: var(--light);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .pizza-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .pizza-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    
+    .pizza-info {
+      padding: 1.5rem;
+    }
+    
+    .pizza-info h3 {
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .pizza-info p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    
+    .price {
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .img-bebidas{
+      width: 50%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+    .order-button {
+      position: relative;
+      overflow: hidden;
+      background: var(--primary);
+      color: var(--light);
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .order-button::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .order-button.added::after {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    
+    .order-button:hover {
+      background: #ff3d00;
+    }
+    
+    .form-container {
+      padding: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 0.5rem 0;
+    }
+    
+    .payment-method:hover {
+      border-color: var(--primary);
+      background: #fff5f5;
+    }
+    
+    .payment-method input[type="radio"] {
+      accent-color: var(--primary);
+    }
+    
+    .payment-method i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .cart-toggle {
+      background: var(--primary);
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    
+    .cart-toggle .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--secondary);
+      color: var(--dark);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.active {
+      right: 0;
+    }
+    
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      gap: 10px;
+    }
+    
+    .cart-item-info {
+      flex-grow: 1;
+    }
+    
+    .cart-item-title {
+      font-weight: bold;
+    }
+    
+    .cart-total {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+      text-align: right;
+    }
+    
+    .cart-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .quantity-controls button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    
+    .quantity-controls button:hover {
+      background: #ff3d00;
+    }
+    
+    .quantity-controls span {
+      min-width: 20px;
+      text-align: center;
+    }
+    
+    .cart-sidebar-footer .total-section {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      padding: 1rem 0;
+      border-top: 2px solid #eee;
+      border-bottom: 2px solid #eee;
+    }
+    
+    #auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1001;
+    }
+    
+    #auth-modal .modal-content {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--dark);
+      padding: 5px 10px;
+      transition: color 0.3s;
+    }
+    
+    .modal-close:hover {
+      color: var(--primary);
+    }
+    
+    .auth-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      text-align: center;
+      padding-top: 1rem;
+    }
+    
+    .auth-form {
+      margin-top: 1rem;
+    }
+    
+    .auth-button {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin: 0.5rem 0;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .auth-button:hover {
+      background: #ff3d00;
+    }
+    
+    .auth-button i {
+      font-size: 1.2rem;
+    }
+    
+    .auth-input {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .auth-input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    
+    .contact-section {
+      padding: 5rem 1rem;
+      max-height: auto;
+      max-width: auto;
+      margin: 0 auto;
+      background-color: black;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .contact-item {
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .contact-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .contact-item i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .contact-item h3 {
+      color: var(--dark);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .contact-item p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+    }
+    
+    .cart-sidebar button.close-cart {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--dark);
+      transition: color 0.3s;
+    }
+    
+    .cart-sidebar button.close-cart:hover {
+      color: var(--primary);
+    }
+    
+    .cart-item-animation {
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      background: var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      animation: flyToCart 0.8s ease-in-out forwards;
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      font-size: 0.9rem;
+      margin-bottom: 0px;
+  }
+  
+    @keyframes flyToCart {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    </head>
+    <body>
+    <header>
+        <div class="nav-container">
+          <div class="logo">🍕 Cruzeiro Pizzas 🍕</div>
+          <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#menu">Cardápio</a>
+            <a href="#about">Sobre</a>
+            <a href="#contact">Contato</a>
+            <a href="javascript:void(0)" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+          </nav>
+        </div>
+      </header>
+    
+      <section class="hero" id="home">
+        <div class="hero-content">
+          <h1>Pizzas Artesanais Autênticas</h1>
+          <p>Tradição e sabor em cada fatia!</p>
+        </div>
+      </section>
+    
+      <section class="menu-section" id="menu">
+        <h2 class="section-title">Nosso Cardápio</h2>
+        <div class="pizza-grid">
+          <div class="pizza-card">
+            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee" alt="Pizza Pepperoni com queijo derretido e pepperoni crocante" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Pepperoni</h3>
+              <p>Molho de tomate, mussarela, pepperoni italiano e orégano</p>
+              <p class="price">R$ 49,90</p>
+              <button class="order-button" onclick="addToCart('Pepperoni', 49.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://www.receitasnestle.com.br/sites/default/files/srh_recipes/d036cd01122da62bf581784f52d99b3a.jpg" alt="Pizza Quatro Queijos dourada com mistura de queijos nobres" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Quatro Queijos</h3>
+              <p>Mussarela, gorgonzola, parmesão e provolone</p>
+              <p class="price">R$ 52,90</p>
+              <button class="order-button" onclick="addToCart('Quatro Queijos', 52.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://images.unsplash.com/photo-1458642849426-cfb724f15ef7" alt="Pizza Calabresa com cebola e azeitonas" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Calabresa</h3>
+              <p>Molho de tomate, mussarela, calabresa e cebola</p>
+              <p class="price">R$ 47,90</p>
+              <button class="order-button" onclick="addToCart('Calabresa', 47.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://images.unsplash.com/photo-1595708684082-a173bb3a06c5" alt="Pizza Portuguesa com ovos, presunto e ervilhas" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Portuguesa</h3>
+              <p>Molho de tomate, mussarela, presunto, ovos, cebola e ervilhas</p>
+              <p class="price">R$ 54,90</p>
+              <button class="order-button" onclick="addToCart('Portuguesa', 54.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47" alt="Pizza Frango com Catupiry" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Frango com Catupiry</h3>
+              <p>Molho de tomate, mussarela, frango desfiado e catupiry</p>
+              <p class="price">R$ 51,90</p>
+              <button class="order-button" onclick="addToCart('Frango com Catupiry', 51.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://pizzaria.websiterapido.com/fotos/pizza-napolitana-10542.jpg" alt="Pizza Napolitana com anchovas, azeitonas e manjericão" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Napolitana</h3>
+              <p>Molho de tomate, mussarela, anchovas, azeitonas pretas, manjericão e azeite</p>
+              <p class="price">R$ 55,90</p>
+              <button class="order-button" onclick="addToCart('Napolitana', 55.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591" alt="Pizza Vegetariana com legumes grelhados" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Vegetariana</h3>
+              <p>Molho de tomate, mussarela, berinjela, abobrinha, pimentão e cogumelos</p>
+              <p class="price">R$ 48,90</p>
+              <button class="order-button" onclick="addToCart('Vegetariana', 48.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://receitason.com/wp-content/uploads/2023/04/pizza-de-atum-caseira.jpg" alt="Pizza Atum com cebola e azeitonas" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Atum</h3>
+              <p>Molho de tomate, mussarela, atum, cebola e azeitonas</p>
+              <p class="price">R$ 50,90</p>
+              <button class="order-button" onclick="addToCart('Atum', 50.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img src="https://minervafoods.com/wp-content/uploads/2022/12/pizza_with_bacon_pepperoni_melted_cheese_olives_mushrooms_and_cherry_tomatoes_-_blog-1.jpg" alt="Pizza Bacon com cebola caramelizada" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Bacon</h3>
+              <p>Molho de tomate, mussarela, bacon crocante, cebola caramelizada e orégano</p>
+              <p class="price">R$ 53,90</p>
+              <button class="order-button" onclick="addToCart('Bacon', 53.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+        </div>
+    
+        <h2 class="section-title">Bebidas</h2>
+        <div class="pizza-grid">
+          <div class="pizza-card">
+            <img class="img-bebidas" src="https://i3-imagens-prd.araujo.com.br/webp/8591/07894900027013_4.webp" alt="Garrafa de Coca-Cola 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Coca-Cola 2L</h3>
+              <p>Refrigerante Coca-Cola 2 Litros</p>
+              <p class="price">R$ 12,90</p>
+              <button class="order-button" onclick="addToCart('Coca-Cola 2L', 12.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img class="img-bebidas" img="img-bebidas" src="https://carrefourbrfood.vtexassets.com/arquivos/ids/106437065/refrigerante-guarana-antarctica-garrafa-2l-2.jpg?v=638144885948670000" alt="Garrafa de Guaraná Antarctica 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Guaraná Antarctica 2L</h3>
+              <p>Refrigerante Guaraná 2 Litros</p>
+              <p class="price">R$ 11,90</p>
+              <button class="order-button" onclick="addToCart('Guaraná 2L', 11.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img class="img-bebidas" src="https://coopsp.vtexassets.com/arquivos/ids/215362-800-auto?v=637919527220430000&width=800&height=auto&aspect=true" alt="Fanta Laranja 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Fanta Laranja 2L</h3>
+              <p>Refrigerante Fanta Laranja 2 Litros</p>
+              <p class="price">R$ 11,90</p>
+              <button class="order-button" onclick="addToCart('Fanta Laranja 2L', 11.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img class="img-bebidas"src="https://carrefourbrfood.vtexassets.com/arquivos/ids/67855482/5473969_1.jpg?v=637945340966800000" alt="Sprite 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Sprite 2L</h3>
+              <p>Refrigerante Sprite 2 Litros</p>
+              <p class="price">R$ 11,90</p>
+              <button class="order-button" onclick="addToCart('Sprite 2L', 11.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img class="img-bebidas" src="https://phygital-files.mercafacil.com/padariabianchi/uploads/produto/_gua_h2o_1_5lt_lim_o_f6ce9469-c498-404d-9d5c-c3ed8560e463.jpg" alt="H2OH! Limão 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>H2OH! Limão 2L</h3>
+              <p>Bebida Gaseificada H2OH! Limão 2 Litros</p>
+              <p class="price">R$ 9,90</p>
+              <button class="order-button" onclick="addToCart('H2OH! Limão 2L', 9.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+    
+          <div class="pizza-card">
+            <img class="img-bebidas" src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSakVkDamBK-398Z1nnxlEOFYYlAwGTy58ZtKg64z25pfyoKHtYsuQgLBeOndg3GLiC_92_7vuh5lY8II0g9rDjAi8NGp_CF8xCek7IQ2VB3lYjIdQyMqFwSw&usqp=CAE" alt="Água Mineral com Gás 2L" class="pizza-img">
+            <div class="pizza-info">
+              <h3>Água Mineral com Gás 2L</h3>
+              <p>Água Mineral Natural Gaseificada 2 Litros</p>
+              <p class="price">R$ 6,90</p>
+              <button class="order-button" onclick="addToCart('Água Mineral com Gás 2L', 6.90, this)">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <section id="about" style="padding: 5rem 1rem; max-width: 1200px; margin: 0 auto;">
+        <h2 class="section-title">Sobre Nós</h2>
+        <div style="text-align: center; line-height: 1.6;">
+          <p>Cruzeiro Pizzas foi fundada por cinco amigos — Henrique, Junior, Daniel, Renan e José. Unidos pelo amor à culinária, eles criaram receitas especiais que logo conquistaram a cidade. Cada pizza traz um toque único dos sócios, que dedicam-se para garantir qualidade e sabor em cada pedaço servido.</p>
+        </div>
+      </section>
+    
+      <section id="contact" class="contact-section">
+        <h2 class="">Contato</h2>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <h3>Telefone</h3>
+            <p>(11) 1234-5678</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <p>contato@cruzeiropizzas.com</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Endereço</h3>
+            <p>Av. Salgado Filho, 100</p>
+            <p>Centro - Guarulhos</p>
+            <p>CEP: 07115-000</p>
+          </div>
+        </div>
+        <footer>
+          © 2024 Cruzeiro Pizzas. Todos os direitos reservados.
+        </footer>
+      </section>
+      <div id="auth-modal">
+        <div class="modal-content">
+          <button class="modal-close" onclick="closeAuthModal()">×</button>
+          <div id="auth-options" class="auth-options">
+            <button class="auth-button" onclick="showLoginForm()">
+              <i class="fas fa-user"></i> Já tenho cadastro
+            </button>
+            <button class="auth-button" onclick="showRegisterForm()">
+              <i class="fas fa-user-plus"></i> Quero me cadastrar
+            </button>
+          </div>
+          
+          <form id="login-form" class="auth-form" style="display: none;">
+            <h3 class="auth-title">Login</h3>
+            <input type="text" class="auth-input" placeholder="Nome" required>
+            <input type="text" class="auth-input" placeholder="CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Digite um CPF válido: xxx.xxx.xxx-xx" required>
+            <button type="submit" class="auth-button">Continuar para Pagamento</button>
+          </form>
+    
+          <form id="register-form" class="auth-form" style="display: none;">
+            <h3 class="auth-title">Cadastro</h3>
+            <input type="text" class="auth-input" placeholder="Nome completo" required>
+            <input type="text" class="auth-input" placeholder="CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Digite um CPF válido: xxx.xxx.xxx-xx" required>
+            <input type="email" class="auth-input" placeholder="Email" required>
+            <input type="text" class="auth-input" placeholder="Endereço" required>
+            <button type="submit" class="auth-button">Continuar para Pagamento</button>
+          </form>
+    
+          <div id="payment-form" class="auth-form" style="display: none;">
+            <h3 class="auth-title">Forma de Pagamento</h3>
+            <div class="payment-methods">
+              <label class="payment-method">
+                <input type="radio" name="payment" value="credit" required>
+                <i class="fas fa-credit-card"></i> Cartão de Crédito
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment" value="pix" required>
+                <i class="fas fa-qrcode"></i> PIX
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment" value="money" required>
+                <i class="fas fa-money-bill-wave"></i> Dinheiro
+              </label>
+            </div>
+            <button type="submit" class="auth-button">Finalizar Pedido</button>
+          </div>
+        </div>
+      </div>
+      <div class="cart-sidebar" id="cart-sidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2>Seu Carrinho</h2>
+          <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-total">Total: R$ <span id="cart-total">0,00</span></div>
+        <div class="cart-actions">
+          <button id="finalize-order" class="auth-button">Finalizar Pedido</button>
+        </div>
+      </div>
+    <script> 
+    let cart = [];
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            cartSidebar.classList.toggle('active');
+        }
+
+        function addToCart(name, price, button) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({name, price, quantity: 1});
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.querySelector('.cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+            let itemCount = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                itemCount += item.quantity;
+
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div>R$ ${item.price.toFixed(2)}</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartCount.textContent = itemCount;
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function updateQuantity (index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCart();
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+            document.getElementById('auth-options').style.display = 'block';
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('payment-form').style.display = 'none';
+        }
+
+        function showLoginForm() {
+            document.getElementById('auth-options').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('payment-form').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('auth-options').style.display = 'none';
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('payment-form').style.display = 'none';
+        }
+
+        function showPaymentForm() {
+            document.getElementById('auth-options').style.display = 'none';
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('payment-form').style.display = 'block';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        showPaymentForm();
+    });
+
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        showPaymentForm();
+    });
+    
+    document.getElementById('finalize-order').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    if (cart.length === 0) {
+                alert("Você não escolheu nenhum pedido.");
+                return; 
+            }
+
+    let orderSummary = "Pedido Confirmado!\n\n";
+    orderSummary += "Itens do pedido:\n";
+    cart.forEach(item => {
+        orderSummary += `${item.name} x${item.quantity} - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    orderSummary += `\nTotal: R$ ${cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}`;
+
+    alert(orderSummary);
+  
+    cart = [];
+    updateCart();
+
+    document.getElementById('auth-modal').style.display = 'none';
+});
+
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    </body>
+    </html>
